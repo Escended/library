@@ -1,0 +1,8 @@
+#container {
+    display: flex;
+    gap: 12px;
+}
+#container div {
+    font-size: 25px;
+    background-color: green;
+}
