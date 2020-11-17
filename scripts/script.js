@@ -10,27 +10,80 @@ function Book(title, author, pages, status) {
     }
 };
 
-const book1 = new Book('Ace', 'Bee', 'Cees', 'not read yet');
+const book1 = new Book("Harry Potter and the Philosopher's Stone", 'J.K Rowling', '400', 'not read yet');
 const book2 = new Book('D', 'E', 'F', 'not read yet');
 book1.info();
 book2.info();
 library.push(book1);
 library.push(book2);
 
-console.table(library);
+
+
 
 const container = document.getElementById("container");
 
-function displayBooks() {    
+function displayBooks() {   
+    container.innerHTML = "";
     library.forEach((book) => {
         let b = document.createElement('div');
         b.innerHTML = book.info();
         container.appendChild(b).className = "book";
     });
+    console.table(library);
 }
 
-function addBookButton() {
+function openForm() {
+    document.getElementById("myForm").style.display = "block";
+
+}
+function closeForm() {
+    document.getElementById("myForm").style.display = "none";
+    let form = document.getElementById("myForm");
+    console.log(typeof form);
+    resetForm(form);
+}
+
+function resetForm(form) {
+    var inputs = form.getElementsByTagName('input');
+    for (var i = 0; i<inputs.length; i++) {
+        switch (inputs[i].type) {
+            // case 'hidden':
+            case 'text':
+                inputs[i].value = '';
+                break;
+            case 'radio':
+            case 'checkbox':
+                inputs[i].checked = false;   
+        }
+    }
+}
+
+function submitForm() {
     
+    let formData = new FormData(document.querySelector('form'))
+
+    for(let pair of formData.entries()) {
+        console.log(pair);
+    }
+    console.log(formData['author']);
+    let b = createBook(formData);
+    console.log(typeof formData.get('book'))
+    if (formData.get('book') !== ''){
+        addBook(b);
+    }
+    //closeForm();
+}
+
+function createBook(book) {
+    return new Book(book.get('book'), book.get('author'), book.get('pages'), book.get('status'));
+}
+
+function addBook(newBook) {
+    library.push(newBook);
+    // let b = document.createElement('div');
+    //     b.innerHTML = newBook.info();
+    //     container.appendChild(b).className = "book";
+    displayBooks();
 }
 
 displayBooks();
