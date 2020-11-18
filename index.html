@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Library</title>
@@ -11,29 +12,30 @@
         <!-- books are here -->
     </main>
     <div class="openBtn">
+        <div id=center-form>
+            <div class="form-popup" id="myForm">
+                <form class="form-container" action="">
+    
+                    <label for="book"><b>Book Name</b></label>
+                    <input type="text" placeholder="Enter Book Name" name="book" required>
+    
+                    <label for="author"><b>Author</b></label>
+                    <input type="text" placeholder="Enter Author Name " name="author" required>
+    
+                    <label for="pages"><b>Pages</b></label>
+                    <input type="text" placeholder="Number of Pages" name="pages" required>
+    
+                    <label for="Status"><b>Status</b></label>
+                    <input type="text" placeholder="Read or not read" name="status" required>
+    
+                    <button type="button" onclick="submitForm()" class="btn">Add</button>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
+                </form>
+            </div>
+        </div>
         <button class="open-button" onclick="openForm()"> Add Book</button>
     </div>
 
-    <div class="form-popup" id="myForm">
-        <form class="form-container" action=""> 
-          <h1>Book info</h1>
-      
-          <label for="book"><b>Book Name</b></label>
-          <input type="text" placeholder="Enter Book Name" name="book" required>
-      
-          <label for="author"><b>Author</b></label>
-          <input type="text" placeholder="Enter Author Name " name="author" required>
-            
-          <label for="pages"><b>Pages</b></label>
-          <input type="text" placeholder="Number of Pages" name="pages" required>
-
-          <label for="Status"><b>Status</b></label>
-          <input type="text" placeholder="Read or not read" name="status" required>
-
-          <button type="submit" onclick="submitForm ()" class="btn">Add</button>
-          <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
-        </form>
-      </div> 
 
     <script src="scripts/script.js"></script>
 </body>
