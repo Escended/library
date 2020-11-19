@@ -1,34 +1,118 @@
 let library = [];
 
-function Book(title, author, pages, status) {
+function Book(title, author, pages) {
     this.title = title,
     this.author = author,
     this.pages = pages,
-    this.status = status,
-    this.info = () => {
-        return `${title} by ${author}, ${pages} pages ${status}`
-    }
+    this.completed = false;
+    // this.info = () => {
+    //     return `${title} by ${author}, ${pages} pages ${status}`
+    // }
 };
 
-const book1 = new Book("Harry Potter and the Philosopher's Stone", 'J.K Rowling', '400', 'not read yet');
-const book2 = new Book('D', 'E', 'F', 'not read yet');
-book1.info();
-book2.info();
+const book1 = new Book("Harry Potter and the Philosopher's Stone", 'J.K Rowling', '400');
 library.push(book1);
-library.push(book2);
 
 
 
 
 const container = document.getElementById("container");
 
+function generateTableHead(table, data) {
+    let tHead = table.createTHead();
+    let row = tHead.insertRow();
+
+    for (let key of data) {
+        if (key === "info"){
+            continue;
+        }
+        let th = document.createElement("th");
+        let text = document.createTextNode(key);
+        th.appendChild(text);
+        row.appendChild(th);
+    }
+}
+
+function generateTable(table, data) {
+    let objCount = 0;
+    
+    for (let element of data) {
+        console.log(objCount);
+        let row = table.insertRow();
+        // Ignore running the info column.
+        let i = 0;
+         
+        for (key in element) {
+            //console.log(key);
+            //console.log(i);
+            if (i === 4) {
+                i = 0;
+                continue;
+            }
+            let cell = row.insertCell();
+            if (i === 3) {
+                //console.log(key);
+                let checkbox = document.createElement("INPUT");
+                checkbox.setAttribute("type", "checkbox");
+                checkbox.classList.add("readCheckbox");
+                cell.appendChild(checkbox);
+                checkbox.addEventListener('change', () => {
+                    //console.log(checkbox);
+                    if (!library[key]){
+                        library[key] = true;
+                    } else {
+                        library[key] = false;
+                    }
+                    //console.log(library[key])
+                })
+            } else {
+                let text = document.createTextNode(element[key]);
+                cell.appendChild(text);
+                if(key === "pages"){
+                    console.log(key);
+                    cell.classList.add("pages");
+                }
+            }
+            i++;
+        }
+        // Delete button for each row
+        let deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "X";
+        deleteButton.classList.add("deleteButton");
+        deleteButton.setAttribute('data-index', objCount);
+        row.appendChild(deleteButton);
+        deleteButton.addEventListener('click', (e) =>{
+            console.log(e);
+            // console.log(deleteButton.dataset.index);
+            console.table(library);
+            library.splice(deleteButton.dataset.index, 1);
+            console.table(library);
+            displayBooks();
+        });
+        objCount++;
+    }
+}
+
+// let checkbox = document.querySelector(".readCheckbox");
+// console.log(checkbox);
+
+
+let table = document.querySelector("table");
+let data = Object.keys(library[0]);
+generateTableHead(table, data);
+// generateTable(table, library);
+
+
 function displayBooks() {   
-    container.innerHTML = "";
-    library.forEach((book) => {
-        let b = document.createElement('div');
-        b.innerHTML = book.info();
-        container.appendChild(b).className = "book";
-    });
+    //container.innerHTML = "";
+    table.innerHTML = "";
+    // library.forEach((book) => {
+    //     let b = document.createElement('div');
+    //     b.innerHTML = book.info();
+    //     container.appendChild(b).className = "book";
+    // });
+    generateTable(table, library);
+    generateTableHead(table, data);
     console.table(library);
 }
 
@@ -73,18 +157,15 @@ function submitForm() {
     if (formData.get('book') !== ''){
         addBook(b);
     }
-    //closeForm();
+    closeForm();
 }
 
 function createBook(book) {
-    return new Book(book.get('book'), book.get('author'), book.get('pages'), book.get('status'));
+    return new Book(book.get('book'), book.get('author'), book.get('pages'));
 }
 
 function addBook(newBook) {
     library.push(newBook);
-    // let b = document.createElement('div');
-    //     b.innerHTML = newBook.info();
-    //     container.appendChild(b).className = "book";
     displayBooks();
 }
 
