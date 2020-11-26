@@ -1,14 +1,26 @@
 let library = [];
 
-function Book(title, author, pages) {
-    this.title = title,
-    this.author = author,
-    this.pages = pages,
-    this.completed = false;
-    // this.info = () => {
-    //     return `${title} by ${author}, ${pages} pages ${status}`
-    // }
-};
+// function Book(title, author, pages) {
+//     this.title = title,
+//     this.author = author,
+//     this.pages = pages,
+//     this.completed = false;
+//     // this.info = () => {
+//     //     return `${title} by ${author}, ${pages} pages ${status}`
+//     // }
+// };
+
+
+class Book {
+    constructor(title, author, pages) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages,
+            this.completed = false;
+    }
+}
+
+
 
 const book1 = new Book("Harry Potter and the Philosopher's Stone", 'J.K Rowling', '400');
 library.push(book1);
@@ -23,7 +35,7 @@ function generateTableHead(table, data) {
     let row = tHead.insertRow();
 
     for (let key of data) {
-        if (key === "info"){
+        if (key === "info") {
             continue;
         }
         let th = document.createElement("th");
@@ -35,13 +47,13 @@ function generateTableHead(table, data) {
 
 function generateTable(table, data) {
     let objCount = 0;
-    
+
     for (let element of data) {
         console.log(objCount);
         let row = table.insertRow();
         // Ignore running the info column.
         let i = 0;
-         
+
         for (key in element) {
             //console.log(key);
             //console.log(i);
@@ -58,7 +70,7 @@ function generateTable(table, data) {
                 cell.appendChild(checkbox);
                 checkbox.addEventListener('change', () => {
                     //console.log(checkbox);
-                    if (!library[key]){
+                    if (!library[key]) {
                         library[key] = true;
                     } else {
                         library[key] = false;
@@ -68,7 +80,7 @@ function generateTable(table, data) {
             } else {
                 let text = document.createTextNode(element[key]);
                 cell.appendChild(text);
-                if(key === "pages"){
+                if (key === "pages") {
                     console.log(key);
                     cell.classList.add("pages");
                 }
@@ -81,7 +93,7 @@ function generateTable(table, data) {
         deleteButton.classList.add("deleteButton");
         deleteButton.setAttribute('data-index', objCount);
         row.appendChild(deleteButton);
-        deleteButton.addEventListener('click', (e) =>{
+        deleteButton.addEventListener('click', (e) => {
             console.log(e);
             // console.log(deleteButton.dataset.index);
             console.table(library);
@@ -103,14 +115,8 @@ generateTableHead(table, data);
 // generateTable(table, library);
 
 
-function displayBooks() {   
-    //container.innerHTML = "";
+function displayBooks() {
     table.innerHTML = "";
-    // library.forEach((book) => {
-    //     let b = document.createElement('div');
-    //     b.innerHTML = book.info();
-    //     container.appendChild(b).className = "book";
-    // });
     generateTable(table, library);
     generateTableHead(table, data);
     console.table(library);
@@ -131,7 +137,7 @@ function closeForm() {
 
 function resetForm(form) {
     var inputs = form.getElementsByTagName('input');
-    for (var i = 0; i<inputs.length; i++) {
+    for (var i = 0; i < inputs.length; i++) {
         switch (inputs[i].type) {
             // case 'hidden':
             case 'text':
@@ -139,22 +145,22 @@ function resetForm(form) {
                 break;
             case 'radio':
             case 'checkbox':
-                inputs[i].checked = false;   
+                inputs[i].checked = false;
         }
     }
 }
 
 function submitForm() {
-    
+
     let formData = new FormData(document.querySelector('form'))
 
-    for(let pair of formData.entries()) {
+    for (let pair of formData.entries()) {
         console.log(pair);
     }
     console.log(formData['author']);
     let b = createBook(formData);
     console.log(typeof formData.get('book'))
-    if (formData.get('book') !== ''){
+    if (formData.get('book') !== '') {
         addBook(b);
     }
     closeForm();
